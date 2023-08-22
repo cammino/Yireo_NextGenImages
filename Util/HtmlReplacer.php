@@ -131,7 +131,8 @@ class HtmlReplacer
             return '';
         }
 
-        $imageUrl = $this->getImageUrlFromElement($image);
+        //$imageUrl = $image->getAttribute('src') ?: $image->getAttribute('data-src');
+        $imageUrl = $image->getAttribute('data-original');
         if (!$this->isAllowedByImageUrl($imageUrl)) {
             return '';
         }
@@ -140,7 +141,7 @@ class HtmlReplacer
         if (!count($images) > 0) {
             return '';
         }
-
+        
         $imageHtml = $this->getImageHtmlFromImage($image, $html);
         $pictureBlock = $this->pictureFactory->create(
             $this->imageFactory->createFromUrl($imageUrl),

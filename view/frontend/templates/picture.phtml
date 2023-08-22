@@ -1,36 +1,37 @@
-<?php declare(strict_types=1);
+<?php
 
-use Yireo\NextGenImages\Block\Picture;
+    declare(strict_types=1);
 
-/** @var $block Picture */
-$width = ($block->getWidth()) ? ' width="' . $block->getWidth() . '"' : '';
-$height = ($block->getHeight()) ? ' height="' . $block->getHeight() . '"' : '';
-$class = ($block->getClass()) ? ' class="' . $block->getClass() . '"' : '';
-$lazyLoading = ($block->getLazyLoading()) ? ' loading="lazy" ' : '';
+    use Yireo\NextGenImages\Block\Picture;
 
-$originalTag = trim($block->getOriginalTag());
-$originalTag = preg_replace('/(\/?)>$/', $lazyLoading . '\1>', $originalTag);
-
-$originalImage = $block->getOriginalImage();
-
-$originalImageType = $block->getOriginalImageType();
-
-$srcAttribute = $block->getSrcAttribute() ?? 'src';
-$srcSetAttribute = $srcAttribute.'set';
+    /** @var $block Picture */
+    $width = ($block->getWidth()) ? ' width="' . $block->getWidth() . '"' : '';
+    $height = ($block->getHeight()) ? ' height="' . $block->getHeight() . '"' : '';
+    $class = ($block->getClass()) ? ' class="' . $block->getClass() . '"' : '';
+    $lazyLoading = ($block->getLazyLoading()) ? ' loading="lazy" ' : '';
+    $lazyImg = $block->getViewFileUrl('Magefan_LazyLoad::images/pixel.jpg');
+    $originalTag = trim($block->getOriginalTag());
+    $originalTag = preg_replace('/(\/?)>$/', $lazyLoading . '\1>', $originalTag);
+    $originalImage = $block->getOriginalImage();
+    $originalImageType = $block->getOriginalImageType();
+    $srcAttribute = $block->getSrcAttribute() ?? 'src';
+    $srcSetAttribute = $srcAttribute . 'set';
+    
 ?>
-<?php if ($block->getDebug()): ?>
+
+<?php if ($block->getDebug()) : ?>
     <!-- <?= /* @noEscape */
-    $block->getOriginalTag() ?> -->
+            $block->getOriginalTag() ?> -->
 <?php endif; ?>
 
 <picture<?= /* @noEscape */
-$class ?>>
-    <?php foreach ($block->getImages() as $image): ?>
+        $class ?>>
+    <?php foreach ($block->getImages() as $image) : ?>
         <source type="<?= /* @noEscape */
-        $image->getMimeType() ?>" <?= /* @noEscape */
-        $srcSetAttribute ?>="<?= /* @noEscape */
-        $image->getUrl() ?>">
+                        $image->getMimeType() ?>" <?= /* @noEscape */
+                                    $srcSetAttribute ?>="<?= /* @noEscape */
+                                $lazyImg ?>" data-originalset="<?= $image->getUrl() ?>" loading="lazy">
     <?php endforeach; ?>
     <?= /* @noEscape */
     $originalTag ?>
-</picture>
+    </picture>
