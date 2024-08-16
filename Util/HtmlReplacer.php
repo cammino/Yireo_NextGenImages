@@ -333,10 +333,11 @@ class HtmlReplacer
     private function getAllowedSrcAttributes(): array
     {
         return [
+            'data-original'/*,
             'src',
             'data-src',
             ':src',
-            ':data-src'
+            ':data-src'*/
         ];
     }
 }
