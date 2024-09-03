@@ -131,8 +131,8 @@ class HtmlReplacer
             return '';
         }
 
-        //$imageUrl = $image->getAttribute('src') ?: $image->getAttribute('data-src');
-        $imageUrl = $image->getAttribute('data-original');
+        $imageUrl = $image->getAttribute('src') ?: $image->getAttribute('data-src');
+        //$imageUrl = $image->getAttribute('data-original');
         if (!$this->isAllowedByImageUrl($imageUrl)) {
             return '';
         }
