@@ -138,6 +138,7 @@ class HtmlReplacer
         }
 
         $imageUrl = $this->getImageUrlFromElement($image);
+        
         if (!$this->isAllowedByImageUrl($imageUrl)) {
             return '';
         }
@@ -274,7 +275,7 @@ class HtmlReplacer
         $imageUrl = '';
         foreach ($attributes as $attribute) {
             $imageUrl = $image->getAttribute($attribute);
-            if (!empty($imageUrl)) {
+            if ((!empty($imageUrl)) && (!str_contains($imageUrl, 'loader.gif'))) {
                 break;
             }
         }
