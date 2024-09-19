@@ -38,6 +38,7 @@ class HtmlReplacer
      * @var ConvertorListing
      */
     private $convertorListing;
+    protected $logger;
 
     /**
      * Constructor.
@@ -54,7 +55,8 @@ class HtmlReplacer
         PictureFactory $pictureFactory,
         ImageFactory   $imageFactory,
         Config $config,
-        ConvertorListing $convertorListing
+        ConvertorListing $convertorListing,
+        \Psr\Log\LoggerInterface $logger
     ) {
         $this->urlConvertor = $urlConvertor;
         $this->imageCollector = $imageCollector;
@@ -62,6 +64,7 @@ class HtmlReplacer
         $this->imageFactory = $imageFactory;
         $this->config = $config;
         $this->convertorListing = $convertorListing;
+        $this->logger = $logger;
     }
 
     /**
@@ -131,7 +134,17 @@ class HtmlReplacer
             return '';
         }
 
-        $imageUrl = $image->getAttribute('src') ?: $image->getAttribute('data-src');
+        $this->logger->debug('src:');
+        $this->logger->debug($image->getAttribute('src'));
+        $this->logger->debug('data-src:');
+        $this->logger->debug($image->getAttribute('data-src'));
+        $imageUrl = $image->getAttribute('src');
+        if (!empty($imageUrl)) {
+            $imageUrl = (str_contains($imageUrl, 'loader.gif')) ? $image->getAttribute('data-src') : $imageUrl;
+        } else {
+            $imageUrl = $image->getAttribute('data-src');
+        }
+        //$imageUrl = $image->getAttribute('src') ?: $image->getAttribute('data-src');
         //$imageUrl = $image->getAttribute('data-original');
         if (!$this->isAllowedByImageUrl($imageUrl)) {
             return '';
